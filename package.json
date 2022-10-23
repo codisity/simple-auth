@@ -1,7 +1,13 @@
 {
-  "name": "node-starter",
-  "version": "0.0.0",
+  "name": "simple-auth",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@fastify/static": "^6.5.0",
+    "crypto-js": "^3.3.0",
+    "fastify": "^4.9.2",
+    "fastify-formidable": "^3.0.2",
+    "nodemon": "^2.0.20"
   }
 }
