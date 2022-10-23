@@ -4,11 +4,13 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@fastify/cookie": "^8.3.0",
     "@fastify/static": "^6.5.0",
     "@prisma/client": "^4.5.0",
     "crypto-js": "^3.3.0",
     "fastify": "^4.9.2",
     "fastify-formidable": "^3.0.2",
+    "nano-id": "^1.1.0",
     "nodemon": "^2.0.20",
     "prisma": "^4.5.0"
   }

@@ -11,8 +11,16 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  login     String   @unique
+  id        Int       @id @default(autoincrement())
+  login     String    @unique
   password  String
+  createdAt DateTime  @default(now())
+  Session   Session[]
+}
+
+model Session {
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  sessionId String   @unique
   createdAt DateTime @default(now())
 }
