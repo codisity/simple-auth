@@ -1,4 +1,3 @@
-// Require the framework and instantiate it
 const fastify = require("fastify")()
 const path = require("path")
 const sha3 = require("crypto-js/sha3")
@@ -23,6 +22,10 @@ fastify.get("/logowanie", (request, reply) => {
 
 fastify.get("/status", (request, reply) => {
   reply.sendFile("status.html")
+})
+
+fastify.get("/wylogowanie", (request, reply) => {
+  reply.sendFile("wylogowanie.html")
 })
 
 fastify.register(require("fastify-formidable"))
@@ -101,11 +104,19 @@ fastify.post("/api/session", async (request, reply) => {
 fastify.get("/api/session", async (request, reply) => {
   const sessionId = request.cookies.sessionId
 
+  if (!sessionId) {
+    return { error: "User not authenticated" }
+  }
+
   try {
     const { user } = await prisma.session.findUnique({
       where: { sessionId },
       include: { user: true },
     })
+
+    if (!user) {
+      return { success: "User not authenticated" }
+    }
 
     // User authenticated
     console.log(user)
@@ -115,6 +126,40 @@ fastify.get("/api/session", async (request, reply) => {
     console.error(error)
 
     return { error: "User not authenticated" }
+  }
+})
+
+fastify.delete("/api/session", async (request, reply) => {
+  const sessionId = request.cookies.sessionId
+
+  if (!sessionId) {
+    return { error: "User not logged in" }
+  }
+
+  try {
+    const { user } = await prisma.session.findUnique({
+      where: { sessionId },
+      include: { user: true },
+    })
+
+    if (!user) {
+      return { success: "User not logged in" }
+    }
+
+    await prisma.session.deleteMany({
+      where: { userId: user.id },
+    })
+
+    reply.setCookie("sessionId", null, {
+      path: "/",
+      maxAge: 0,
+    })
+
+    return { success: "User logged out" }
+  } catch (error) {
+    console.error(error)
+
+    return { error: "User not logged in" }
   }
 })
 
