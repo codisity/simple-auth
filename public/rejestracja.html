@@ -8,28 +8,28 @@
   <body>
     <form action="/api/user">
       <input name="login" type="text" placeholder="Login" />
-      <input name="password" type="text" placeholder="Hasło" />
+      <input name="password" type="password" placeholder="Hasło" />
       <button>Zarejestruj się</button>
       <output name="output"></output>
     </form>
 
     <script>
-        const form = document.querySelector("form")
-        form.addEventListener("submit", handleSubmit)
+      const form = document.querySelector("form")
+      form.addEventListener("submit", handleSubmit)
 
-        async function handleSubmit(event) {
-          event.preventDefault()
+      async function handleSubmit(event) {
+        event.preventDefault()
 
-          const formData = new FormData(event.target)
+        const formData = new FormData(event.target)
 
-          const response = await fetch(form.action, {
-            method: "POST",
-            body: formData
-          })
-          const responseData = await response.json()
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+        })
+        const responseData = await response.json()
 
-          form.output.innerText = JSON.stringify(responseData)
-        }
+        form.output.innerText = JSON.stringify(responseData)
+      }
     </script>
-</body>
+  </body>
 </html>
